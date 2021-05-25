@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background-color: lightblue;
+        }
+
+        h1 {
+            color: white;
+
+        }
+
+        p {
+            font-family: verdana;
+            font-size: 20px;
+        }
+
+        label {
+            text-align: center;
+        }
+
+        input {
+            text-align: center;
+        }
+    </style>
+</head>
+<title>日文50音發音測驗</title>
+
+<body onload="init()">
+    <h1>
+        <p id='question'>aaa</p>
+    </h1>
+    <p><label for="answer">發音:</label>
+        <input type="text" id="answer" name="answer">
+        <button onclick="sumit()">送出</button>
+    </p>
+    <p><label for="filter">設定:</label>
+        <input type="checkbox" id="hiragana" name="hiragana" value="hiragana" checked=true>
+        <label for="hiragana">平假名</label>
+        <input type="checkbox" id="katakana" name="katakana" value="katakana">
+        <label for="katakana">片假名</label>
+    </p>
+</body>
+
+<script>
+    var hiragana_char = ['あ', 'い', 'う', 'え', 'お'];
+    var katakana_char = ['ア', 'イ', 'ウ', 'エ', 'オ'];
+    var tone_char = ['a', 'i', 'u', 'e', 'o'];
+    var number = 0;
+    function init() {
+        randomQuestion();
+    }
+
+    function randomQuestion() {
+        number = Math.floor(Math.random() * hiragana_char.length);
+        var question = document.getElementById("question");
+        question.textContent = hiragana_char[number];
+    }
+
+    function clearAnswer() {
+        var answer = document.getElementById("answer");
+        answer.value = '';
+    }
+
+    function compareStringNoCase(string1, string2) {
+        return (string1.toUpperCase() === string2.toUpperCase());
+    }
+
+    function sumit() {
+        var answer = document.getElementById("answer");
+        if (compareStringNoCase(answer.value, tone_char[number])) {
+            alert('pass');
+            randomQuestion();
+        }
+        else {
+            alert('not pass');
+        }
+    }
+</script>
+
+</html>
