@@ -112,7 +112,7 @@
     <p><label for="filter">設定:</label>
         <input type="checkbox" id="hiragana" name="hiragana" value="hiragana" checked=true>
         <label for="hiragana">平假名</label>
-        <input type="checkbox" id="katakana" name="katakana" value="katakana" checked=true>
+        <input type="checkbox" id="katakana" name="katakana" value="katakana">
         <label for="katakana">片假名</label>
     </p>
     <div class="divTable minimalistBlack">
@@ -139,8 +139,8 @@
 </body>
 
 <script>
-    var hiragana_char = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ'];
-    var katakana_char = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ'];
+    var hiragana_char = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ','た','ち','つ','て','と'];
+    var katakana_char = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ','タ','チ','ツ','テ','ト'];
     var tone_char = ['a', 'i', 'u', 'e', 'o', 'ka', 'ki', 'ku', 'ke', 'ko', 'sa', 'shi', 'su', 'se', 'so', 'ta', 'chi', 'tsu', 'te', 'to', 'na', 'ni', 'nu', 'ne', 'no', 'ha', 'hi', 'fu', 'he', 'ho', 'ma', 'mi', 'mu', 'me', 'mo', 'ya', 'yu', 'yo', 'ra', 'ri', 'ru', 're', 'ro', 'wa', 'wo', 'n'];
     var number = 0;
     var recordHTML = '';
