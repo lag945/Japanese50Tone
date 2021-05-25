@@ -55,7 +55,12 @@
     }
 
     function randomQuestion() {
-        number = Math.floor(Math.random() * hiragana_char.length);
+        //avoid the same number
+        let _number = number;
+        while (_number == number) {
+            _number = Math.floor(Math.random() * hiragana_char.length);
+        }
+        number = _number;
         let hiragana = document.getElementById("hiragana");
         let katakana = document.getElementById("katakana");
         let question = document.getElementById("question");
@@ -80,7 +85,7 @@
         else {
             test_record.innerHTML += "<br>" + hiragana_char[number] + "-" + answer.value.toLowerCase() + "-" + tone_char[number] + ": Fail";
         }
-        clearAnswer
+        clearAnswer();
         randomQuestion();
     }
 </script>
