@@ -142,26 +142,28 @@
     var hiragana_char = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ', 'た', 'ち', 'つ', 'て', 'と', 'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ', 'へ', 'ほ', 'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん'];
     var katakana_char = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ', 'タ', 'チ', 'ツ', 'テ', 'ト', 'ナ', 'ニ', 'ヌ', 'ネ', 'ノ', 'ハ', 'ヒ', 'フ', 'ヘ', 'ホ', 'マ', 'ミ', 'ム', 'メ', 'モ', 'ヤ', 'ユ', 'ヨ', 'ラ', 'リ', 'ル', 'レ', 'ロ', 'ワ', 'ヲ', 'ン'];
     var tone_char = ['a', 'i', 'u', 'e', 'o', 'ka', 'ki', 'ku', 'ke', 'ko', 'sa', 'shi', 'su', 'se', 'so', 'ta', 'chi', 'tsu', 'te', 'to', 'na', 'ni', 'nu', 'ne', 'no', 'ha', 'hi', 'fu', 'he', 'ho', 'ma', 'mi', 'mu', 'me', 'mo', 'ya', 'yu', 'yo', 'ra', 'ri', 'ru', 're', 'ro', 'wa', 'wo', 'n'];
-    var number = 0;
     var recordHTML = '';
+    var currentQuestionIndex = 0;
+    var questionIndexList = [];
 
     function init() {
         randomQuestion();
+        showQuestion(false);
     }
 
     // return 0~ <= maxNumber array once
     function randomRangnArrayOnce(maxNumber) {
         var ret = [];
-        while(ret.length < maxNumber){
+        while (ret.length < maxNumber) {
             let number = Math.floor(Math.random() * maxNumber);
             let isTheSame = false;
-            for(let i=0;i<ret.length;i++){
-                if(ret[i]==number){
+            for (let i = 0; i < ret.length; i++) {
+                if (ret[i] == number) {
                     isTheSame = true;
                     break;
                 }
             }
-            if(!isTheSame){
+            if (!isTheSame) {
                 ret.push(number);
             }
         }
@@ -169,17 +171,27 @@
     }
 
     function randomQuestion() {
-        //avoid the same number
-        let _number = number;
-        while (_number == number) {
-            _number = Math.floor(Math.random() * hiragana_char.length);
+        questionIndexList = randomRangnArrayOnce(hiragana_char.length);
+    }
+
+    function showQuestion(next) {
+        // auto add one if need.
+        if (next) {
+            if (currentQuestionIndex < hiragana_char.length - 1) {
+                currentQuestionIndex++;
+            }
+            else{ //if max index , auto reset to zero.
+                randomQuestion();
+                currentQuestionIndex = 0;
+            }
         }
-        number = _number;
         let hiragana = document.getElementById("hiragana");
         let katakana = document.getElementById("katakana");
         let question = document.getElementById("question");
-        question.textContent = (hiragana.checked ? hiragana_char[number] : '') + (katakana.checked ? katakana_char[number] : '');
+        let index = questionIndexList[currentQuestionIndex];
+        question.textContent = (hiragana.checked ? hiragana_char[index] : '') + (katakana.checked ? katakana_char[index] : '');
     }
+
 
     function clearAnswer() {
         let answer = document.getElementById("answer");
@@ -194,13 +206,14 @@
         let answer = document.getElementById("answer");
         let test_record = document.getElementById("test_record");
         let question = document.getElementById("question");
+        let index = questionIndexList[currentQuestionIndex];
 
         let log = "<div class='divTableRow'>";
         log += "<div class='divTableCell'>" + question.textContent + "</div>";
         log += "<div class='divTableCell'>" + answer.value + "</div>";
-        log += "<div class='divTableCell'>" + tone_char[number] + "</div>";
+        log += "<div class='divTableCell'>" + tone_char[index] + "</div>";
 
-        if (compareStringNoCase(answer.value, tone_char[number])) {
+        if (compareStringNoCase(answer.value, tone_char[index])) {
 
             log += "<div class='divTableCell'>" + "Pass" + "</div>";
         }
@@ -215,7 +228,7 @@
 
         test_record.innerHTML = recordHTML;
         clearAnswer();
-        randomQuestion();
+        showQuestion(true);
     }
 </script>
 
