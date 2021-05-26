@@ -149,6 +149,25 @@
         randomQuestion();
     }
 
+    // return 0~ <= maxNumber array once
+    function randomRangnArrayOnce(maxNumber) {
+        var ret = [];
+        while(ret.length < maxNumber){
+            let number = Math.floor(Math.random() * maxNumber);
+            let isTheSame = false;
+            for(let i=0;i<ret.length;i++){
+                if(ret[i]==number){
+                    isTheSame = true;
+                    break;
+                }
+            }
+            if(!isTheSame){
+                ret.push(number);
+            }
+        }
+        return ret;
+    }
+
     function randomQuestion() {
         //avoid the same number
         let _number = number;
