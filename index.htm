@@ -110,14 +110,16 @@
         <button onclick="sumit()">送出</button>
     </p>
     <p><label for="filter">設定:</label>
-        <input type="checkbox" id="hiragana" name="hiragana" value="hiragana" checked=true>
+        <input type="checkbox" id="hiragana" name="hiragana" value="hiragana" checked=true
+            onClick="randomQuestion();showQuestion(false);">
         <label for="hiragana">平假名</label>
-        <input type="checkbox" id="katakana" name="katakana" value="katakana">
+        <input type="checkbox" id="katakana" name="katakana" value="katakana"
+            onClick="randomQuestion();showQuestion(false);">
         <label for="katakana">片假名</label>
         <input type="checkbox" id="voiced" name="voiced" value="voiced" disabled=true>
         <label for="voiced">濁音</label>
         <input type="checkbox" id="half-voiced" name="half-voiced" value="half-voiced" disabled=true>
-        <label for="half-voiced">半濁音</label>                
+        <label for="half-voiced">半濁音</label>
     </p>
     <div class="divTable minimalistBlack">
         <div class="divTableHeading">
@@ -175,6 +177,7 @@
     }
 
     function randomQuestion() {
+        currentQuestionIndex = 0;
         questionIndexList = randomRangnArrayOnce(hiragana_char.length);
     }
 
@@ -184,16 +187,15 @@
             if (currentQuestionIndex < hiragana_char.length - 1) {
                 currentQuestionIndex++;
             }
-            else{ //if max index , auto reset to zero.
+            else { //if max index , auto reset to zero.
                 randomQuestion();
-                currentQuestionIndex = 0;
             }
         }
         let hiragana = document.getElementById("hiragana");
         let katakana = document.getElementById("katakana");
         let question = document.getElementById("question");
         let index = questionIndexList[currentQuestionIndex];
-        question.textContent = (hiragana.checked ? hiragana_char[index] : '') + (katakana.checked ? katakana_char[index] : '');
+        question.textContent = (hiragana.checked ? hiragana_char[index] : '') + (katakana.checked ? katakana_char[index] : '') + "(" + (currentQuestionIndex + 1) + ")";
     }
 
 
