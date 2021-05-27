@@ -125,9 +125,9 @@
         <div class="divTableHeading">
             <div class="divTableRow">
                 <div class="divTableHead">題目</div>
+                <div class="divTableHead">檢定</div>
                 <div class="divTableHead">作答</div>
-                <div class="divTableHead">正解</div>
-                <div class="divTableHead">狀況</div>
+                <div class="divTableHead">解答</div>
                 <div class="divTableHead">時間</div>
             </div>
         </div>
@@ -216,17 +216,17 @@
 
         let log = "<div class='divTableRow'>";
         log += "<div class='divTableCell'>" + question.textContent + "</div>";
-        log += "<div class='divTableCell'>" + answer.value + "</div>";
-        log += "<div class='divTableCell'>" + tone_char[index] + "</div>";
 
         if (compareStringNoCase(answer.value, tone_char[index])) {
 
-            log += "<div class='divTableCell'>" + "Pass" + "</div>";
+            log += "<div class='divTableCell'>" + "<p style='color:green;'>Pass</p>" + "</div>";
         }
         else {
-            log += "<div class='divTableCell'>" + "Fail" + "</div>";
+            log += "<div class='divTableCell'>" + "<p style='color:red;'>Fail</p>" + "</div>";
         }
 
+        log += "<div class='divTableCell'>" + answer.value + "</div>";
+        log += "<div class='divTableCell'>" + tone_char[index] + "</div>";        
         let date = new Date();
         log += "<div class='divTableCell'>" + date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0') + ":" + date.getSeconds().toString().padStart(2, '0') + "</div>";
         log += "</div>";
