@@ -151,6 +151,8 @@
     var recordHTML = '';
     var currentQuestionIndex = 0;
     var questionIndexList = [];
+    var passCount = 0;
+    var failCount = 0;
 
     function init() {
         randomQuestion();
@@ -179,6 +181,8 @@
     function randomQuestion() {
         currentQuestionIndex = 0;
         questionIndexList = randomRangnArrayOnce(hiragana_char.length);
+        passCount = 0;
+        failCount = 0;
     }
 
     function showQuestion(next) {
@@ -188,6 +192,7 @@
                 currentQuestionIndex++;
             }
             else { //if max index , auto reset to zero.
+                alert("測試完成，錯誤" + failCount + "題，正確率:" + (passCount/(passCount+failCount)*100.0).toFixed(2) + "%");
                 randomQuestion();
             }
         }
@@ -220,9 +225,11 @@
         if (compareStringNoCase(answer.value, tone_char[index])) {
 
             log += "<div class='divTableCell'>" + "<p style='color:green;'>Pass</p>" + "</div>";
+            passCount++;
         }
         else {
             log += "<div class='divTableCell'>" + "<p style='color:red;'>Fail</p>" + "</div>";
+            failCount++;
         }
 
         log += "<div class='divTableCell'>" + answer.value + "</div>";
