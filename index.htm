@@ -116,9 +116,13 @@
         <input type="checkbox" id="katakana" name="katakana" value="katakana"
             onClick="randomQuestion();showQuestion(false);">
         <label for="katakana">片假名</label>
-        <input type="checkbox" id="voiced" name="voiced" value="voiced" disabled=true>
+        <input type="checkbox" id="voiceless" name="voiceless" value="voiceless" checked=true
+            onClick="randomQuestion();showQuestion(false);">
+        <label for="voiceless">清音</label>
+        <input type="checkbox" id="voiced" name="voiced" value="voiced" onClick="randomQuestion();showQuestion(false);">
         <label for="voiced">濁音</label>
-        <input type="checkbox" id="half-voiced" name="half-voiced" value="half-voiced" disabled=true>
+        <input type="checkbox" id="half-voiced" name="half-voiced" value="half-voiced"
+            onClick="randomQuestion();showQuestion(false);">
         <label for="half-voiced">半濁音</label>
     </p>
     <div class="divTable minimalistBlack">
@@ -148,12 +152,15 @@
     var voiceless_hiragana_char = ['あ', 'い', 'う', 'え', 'お', 'か', 'き', 'く', 'け', 'こ', 'さ', 'し', 'す', 'せ', 'そ', 'た', 'ち', 'つ', 'て', 'と', 'な', 'に', 'ぬ', 'ね', 'の', 'は', 'ひ', 'ふ', 'へ', 'ほ', 'ま', 'み', 'む', 'め', 'も', 'や', 'ゆ', 'よ', 'ら', 'り', 'る', 'れ', 'ろ', 'わ', 'を', 'ん'];
     var voiceless_katakana_char = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ', 'サ', 'シ', 'ス', 'セ', 'ソ', 'タ', 'チ', 'ツ', 'テ', 'ト', 'ナ', 'ニ', 'ヌ', 'ネ', 'ノ', 'ハ', 'ヒ', 'フ', 'ヘ', 'ホ', 'マ', 'ミ', 'ム', 'メ', 'モ', 'ヤ', 'ユ', 'ヨ', 'ラ', 'リ', 'ル', 'レ', 'ロ', 'ワ', 'ヲ', 'ン'];
     var voiceless_tone = ['a', 'i', 'u', 'e', 'o', 'ka', 'ki', 'ku', 'ke', 'ko', 'sa', 'shi', 'su', 'se', 'so', 'ta', 'chi', 'tsu', 'te', 'to', 'na', 'ni', 'nu', 'ne', 'no', 'ha', 'hi', 'fu', 'he', 'ho', 'ma', 'mi', 'mu', 'me', 'mo', 'ya', 'yu', 'yo', 'ra', 'ri', 'ru', 're', 'ro', 'wa', 'wo', 'n'];
-    var voice_hiragana_char = ['が', 'ぎ', 'ぐ', 'げ', 'ご', 'ざ', 'じ', 'ず', 'ぜ', 'ぞ', 'だ', 'ぢ', 'づ', 'で', 'ど', 'ば', 'び', 'ぶ', 'べ', 'ぼ'];
-    var voice_katakana_char = ['ガ', 'ギ', 'グ', 'ゲ', 'ゴ', 'ザ', 'ジ', 'ズ', 'ゼ', 'ゾ', 'ダ', 'ヂ', 'ヅ', 'デ', 'ド', 'バ', 'ビ', 'ブ', 'ベ', 'ボ'];
-    var voice_tone = ['ga', 'gi', 'gu', 'ge', 'go', 'za', 'zi', 'zu', 'ze', 'zo', 'da', 'di', 'du', 'de', 'do'];
-    var half_voice_hiragana_char = ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'];
-    var half_voice_katakana_char = ['パ', 'ピ', 'プ', 'ペ', 'ポ'];
-    var half_voice_tone = ['ba', 'bi', 'bu', 'be', 'bo'];
+    var voiced_hiragana_char = ['が', 'ぎ', 'ぐ', 'げ', 'ご', 'ざ', 'じ', 'ず', 'ぜ', 'ぞ', 'だ', 'ぢ', 'づ', 'で', 'ど', 'ば', 'び', 'ぶ', 'べ', 'ぼ'];
+    var voiced_katakana_char = ['ガ', 'ギ', 'グ', 'ゲ', 'ゴ', 'ザ', 'ジ', 'ズ', 'ゼ', 'ゾ', 'ダ', 'ヂ', 'ヅ', 'デ', 'ド', 'バ', 'ビ', 'ブ', 'ベ', 'ボ'];
+    var voiced_tone = ['ga', 'gi', 'gu', 'ge', 'go', 'za', 'zi', 'zu', 'ze', 'zo', 'da', 'di', 'du', 'de', 'do', 'ba', 'bi', 'bu', 'be', 'bo'];
+    var half_voiced_hiragana_char = ['ぱ', 'ぴ', 'ぷ', 'ぺ', 'ぽ'];
+    var half_voiced_katakana_char = ['パ', 'ピ', 'プ', 'ペ', 'ポ'];
+    var half_voiced_tone = ['pa', 'pi', 'pu', 'pe', 'po'];
+    var questionDatabase_hiragana = [];
+    var questionDatabase_katakana = [];
+    var answerDatabase = [];
     var recordHTML = '';
     var currentQuestionIndex = 0;
     var questionIndexList = [];
@@ -184,9 +191,36 @@
         return ret;
     }
 
+    function generateDatabase() {
+        questionDatabase_hiragana = [];
+        questionDatabase_katakana = [];
+        answerDatabase = [];
+        let voiceless = document.getElementById("voiceless");
+        let voiced = document.getElementById("voiced");
+        let halfVoiced = document.getElementById("half-voiced");
+
+        if (voiceless.checked) {
+            questionDatabase_hiragana = questionDatabase_hiragana.concat(voiceless_hiragana_char);
+            questionDatabase_katakana = questionDatabase_katakana.concat(voiceless_katakana_char);
+            answerDatabase = answerDatabase.concat(voiceless_tone);
+        }
+        if (voiced.checked) {
+            questionDatabase_hiragana = questionDatabase_hiragana.concat(voiced_hiragana_char);
+            questionDatabase_katakana = questionDatabase_katakana.concat(voiced_katakana_char);
+            answerDatabase = answerDatabase.concat(voiced_tone);
+        }
+        if (halfVoiced.checked) {
+            questionDatabase_hiragana = questionDatabase_hiragana.concat(half_voiced_hiragana_char);
+            questionDatabase_katakana = questionDatabase_katakana.concat(half_voiced_katakana_char);
+            answerDatabase = answerDatabase.concat(half_voiced_tone);
+        }
+
+    }
+
     function randomQuestion() {
         currentQuestionIndex = 0;
-        questionIndexList = randomRangnArrayOnce(hiragana_char.length);
+        generateDatabase();
+        questionIndexList = randomRangnArrayOnce(answerDatabase.length);
         passCount = 0;
         failCount = 0;
     }
@@ -194,7 +228,7 @@
     function showQuestion(next) {
         // auto add one if need.
         if (next) {
-            if (currentQuestionIndex < hiragana_char.length - 1) {
+            if (currentQuestionIndex < answerDatabase.length - 1) {
                 currentQuestionIndex++;
             }
             else { //if max index , auto reset to zero.
@@ -206,7 +240,7 @@
         let katakana = document.getElementById("katakana");
         let question = document.getElementById("question");
         let index = questionIndexList[currentQuestionIndex];
-        question.textContent = (hiragana.checked ? hiragana_char[index] : '') + (katakana.checked ? katakana_char[index] : '') + "(" + (currentQuestionIndex + 1) + ")";
+        question.textContent = (hiragana.checked ? questionDatabase_hiragana[index] : '') + (katakana.checked ? questionDatabase_katakana[index] : '') + "(" + (currentQuestionIndex + 1) + ")";
     }
 
 
@@ -228,7 +262,7 @@
         let log = "<div class='divTableRow'>";
         log += "<div class='divTableCell'>" + question.textContent + "</div>";
 
-        if (compareStringNoCase(answer.value, tone_char[index])) {
+        if (compareStringNoCase(answer.value, answerDatabase[index])) {
 
             log += "<div class='divTableCell'>" + "<p style='color:green;'>Pass</p>" + "</div>";
             passCount++;
@@ -239,7 +273,7 @@
         }
 
         log += "<div class='divTableCell'>" + answer.value + "</div>";
-        log += "<div class='divTableCell'>" + tone_char[index] + "</div>";
+        log += "<div class='divTableCell'>" + answerDatabase[index] + "</div>";
         let date = new Date();
         log += "<div class='divTableCell'>" + date.getHours().toString().padStart(2, '0') + ":" + date.getMinutes().toString().padStart(2, '0') + ":" + date.getSeconds().toString().padStart(2, '0') + "</div>";
         log += "</div>";
